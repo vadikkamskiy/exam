@@ -16,7 +16,6 @@ public class ExamController {
         this.examinerService = examinerService;
     }
 
-    // Получить список случайных вопросов
     @GetMapping("/get/{amount}")
     public Collection<Question> getQuestions(@PathVariable int amount) {
         return examinerService.getQuestions(amount);

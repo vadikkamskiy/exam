@@ -23,7 +23,6 @@ public class JavaQuestionService implements QuestionService {
 
     @PostConstruct
     private void loadDefaultQuestions() {
-        log.info("Loading default questions...");
         addQuestion("What is Java?", "A programming language");
         addQuestion("What is Polymorphism?", "OOP concept");
         addQuestion("What is an Interface?", "A blueprint of a class");
