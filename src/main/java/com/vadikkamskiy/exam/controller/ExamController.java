@@ -2,10 +2,12 @@ package com.vadikkamskiy.exam.controller;
 
 import com.vadikkamskiy.exam.model.Question;
 import com.vadikkamskiy.exam.service.ExaminerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+@Slf4j
 @RestController
 @RequestMapping("/exam")
 public class ExamController {
@@ -15,6 +17,7 @@ public class ExamController {
     public ExamController(ExaminerService examinerService) {
         this.examinerService = examinerService;
     }
+
 
     @GetMapping("/get/{amount}")
     public Collection<Question> getQuestions(@PathVariable int amount) {
