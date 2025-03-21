@@ -1,41 +1,36 @@
 package com.vadikkamskiy.exam.service.impl;
 
-
 import com.vadikkamskiy.exam.model.Question;
+import com.vadikkamskiy.exam.repository.QuestionRepository;
 import com.vadikkamskiy.exam.service.ExaminerService;
-import com.vadikkamskiy.exam.service.QuestionService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
-
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
 
-    private final QuestionService questionService;
-    private final Random random = new Random();
+    private final QuestionRepository allQuestion;
 
-    public ExaminerServiceImpl(QuestionService questionService) {
-        this.questionService = questionService;
+    public ExaminerServiceImpl(
+            QuestionRepository allQuestion) {
+        this.allQuestion = allQuestion;
     }
 
     @Override
-    public Collection<Question> getQuestions(int amount) {
-        List<Question> allQuestions = new ArrayList<>(questionService.getAllQuestions());
-
+    public Set<Question> getQuestions(int amount) {
+        Set<Question> result = new HashSet<>();
+        List<Question> allQuestions = new ArrayList<>(allQuestion.getAll());
+        System.out.println(allQuestion.getAll());
         if (amount > allQuestions.size()) {
             throw new IllegalArgumentException("Requested more questions than available");
         }
 
-        Set<Question> selectedQuestions = new HashSet<>();
-        while (selectedQuestions.size() < amount) {
-            int index = random.nextInt(allQuestions.size());
-            selectedQuestions.add(allQuestions.get(index));
+        while (result.size() < amount) {
+            Question question = allQuestion.getRand();
+            result.add(question);
         }
 
-        return selectedQuestions;
+        return result;
     }
 }

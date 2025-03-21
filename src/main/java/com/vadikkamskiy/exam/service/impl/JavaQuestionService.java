@@ -1,7 +1,9 @@
 package com.vadikkamskiy.exam.service.impl;
 
 import com.vadikkamskiy.exam.model.Question;
+import com.vadikkamskiy.exam.repository.QuestionRepository;
 import com.vadikkamskiy.exam.service.QuestionService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,15 +17,18 @@ import java.util.Random;
 import java.util.Set;
 
 @Slf4j
-@Service
+@Service("javaQuestionService")
 public class JavaQuestionService implements QuestionService {
 
     private final Set<Question> questions = new HashSet<>();
     private final Random random = new Random();
+    QuestionRepository repository;
+    public JavaQuestionService (@Qualifier("inMemoryQuestionRepository") QuestionRepository questionRepository){
+        this.repository = questionRepository;
+    }
 
     @PostConstruct
-    private void loadDefaultQuestions() {
-        log.info("Loading default questions...");
+    private void init() {
         addQuestion("What is Java?", "A programming language");
         addQuestion("What is Polymorphism?", "OOP concept");
         addQuestion("What is an Interface?", "A blueprint of a class");
@@ -37,6 +42,7 @@ public class JavaQuestionService implements QuestionService {
         log.info("Adding question: {} with answer: {}", question, answer);
         Question newQuestion = new Question(question, answer);
         questions.add(newQuestion);
+        repository.add(newQuestion);
         return newQuestion;
     }
 
