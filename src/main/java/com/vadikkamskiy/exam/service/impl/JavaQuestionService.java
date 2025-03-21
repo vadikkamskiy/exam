@@ -54,6 +54,8 @@ public class JavaQuestionService implements QuestionService {
             log.warn("Question not found: {}", question);
             throw new RuntimeException("Question not found");
         }
+        questions.remove(q);
+        repository.remove(q);
         return q;
     }
 

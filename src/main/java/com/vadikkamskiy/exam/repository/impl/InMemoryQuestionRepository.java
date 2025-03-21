@@ -18,10 +18,6 @@ public class InMemoryQuestionRepository implements QuestionRepository {
     private final Set<Question> questions = new HashSet<>();
     private final Random random = new Random();
 
-//        public InMemoryQuestionRepository(MathQuestionService math, JavaQuestionService java){
-//        questions.add((Question) math.getAllQuestions());
-//        questions.add((Question) java.getAllQuestions());
-//    }
     @Override
     public Question add(Question question) {
         questions.add(question);
@@ -33,6 +29,8 @@ public class InMemoryQuestionRepository implements QuestionRepository {
         if (!questions.remove(question)) {
             throw new RuntimeException("Question not found");
         }
+        questions.remove(question);
+        log.info("Removed question: {}", question.getQuestion());
         return question;
     }
 

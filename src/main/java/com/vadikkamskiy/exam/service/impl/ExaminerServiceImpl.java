@@ -33,4 +33,8 @@ public class ExaminerServiceImpl implements ExaminerService {
 
         return result;
     }
+    @Override
+    public Set<Question> getAllQuestions() {
+        return allQuestion.getAll();
+    }
 }

@@ -7,11 +7,11 @@ import com.vadikkamskiy.exam.service.QuestionService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
+@Slf4j
 @Service("mathQuestionService")
 @Qualifier("mathQuestionService")
 public class MathQuestionService implements QuestionService {
@@ -40,8 +40,15 @@ public class MathQuestionService implements QuestionService {
 
     @Override
     public Question removeQuestion(String question, String answer) {
-        mathQuestion.remove(new Question(question,answer));
-        return new Question(question, answer);
+        log.info("Removing question: {} with answer: {}", question, answer);
+        Question q = new Question(question, answer);
+        if (!mathQuestion.remove(q)) {
+            log.warn("Question not found: {}", question);
+            throw new RuntimeException("Question not found");
+        }
+        mathQuestion.remove(q);
+        repository.remove(q);
+        return q;
     }
 
     @Override
