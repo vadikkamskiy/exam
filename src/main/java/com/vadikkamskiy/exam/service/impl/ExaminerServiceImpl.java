@@ -11,7 +11,6 @@ import java.util.*;
 public class ExaminerServiceImpl implements ExaminerService {
 
     private final QuestionRepository allQuestion;
-    private final Random rand = new Random();
 
     public ExaminerServiceImpl(
             QuestionRepository allQuestion) {
@@ -27,9 +26,8 @@ public class ExaminerServiceImpl implements ExaminerService {
             throw new IllegalArgumentException("Requested more questions than available");
         }
 
-        Random rand = new Random();
         while (result.size() < amount) {
-            Question question = allQuestions.get(rand.nextInt(allQuestions.size()));
+            Question question = allQuestion.getRand();
             result.add(question);
         }
 

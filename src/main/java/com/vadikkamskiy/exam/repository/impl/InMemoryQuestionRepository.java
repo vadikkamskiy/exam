@@ -3,8 +3,6 @@ package com.vadikkamskiy.exam.repository.impl;
 import com.vadikkamskiy.exam.model.Question;
 import com.vadikkamskiy.exam.repository.QuestionRepository;
 
-import com.vadikkamskiy.exam.service.impl.JavaQuestionService;
-import com.vadikkamskiy.exam.service.impl.MathQuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 

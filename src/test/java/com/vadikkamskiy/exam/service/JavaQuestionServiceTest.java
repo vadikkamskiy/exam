@@ -1,9 +1,11 @@
 package com.vadikkamskiy.exam.service;
 
 import com.vadikkamskiy.exam.model.Question;
+import com.vadikkamskiy.exam.repository.QuestionRepository;
 import com.vadikkamskiy.exam.service.impl.JavaQuestionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.Set;
 
@@ -12,10 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class JavaQuestionServiceTest {
 
     private JavaQuestionService javaQuestionService;
+    private QuestionRepository repository;
 
     @BeforeEach
     void setUp() {
-        javaQuestionService = new JavaQuestionService();
+        repository = Mockito.mock(QuestionRepository.class);
+        javaQuestionService = new JavaQuestionService(repository);
         javaQuestionService.addQuestion("What is Java?", "A programming language");
         javaQuestionService.addQuestion("What is Polymorphism?", "OOP concept");
     }

@@ -2,7 +2,6 @@ package com.vadikkamskiy.exam.service.impl;
 
 import com.vadikkamskiy.exam.model.Question;
 import com.vadikkamskiy.exam.repository.QuestionRepository;
-import com.vadikkamskiy.exam.repository.impl.InMemoryQuestionRepository;
 import com.vadikkamskiy.exam.service.QuestionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
