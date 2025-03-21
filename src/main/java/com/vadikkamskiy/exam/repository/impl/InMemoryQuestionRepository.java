@@ -4,15 +4,12 @@ import com.vadikkamskiy.exam.model.Question;
 import com.vadikkamskiy.exam.repository.QuestionRepository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 @Slf4j
-@Repository
 public class InMemoryQuestionRepository implements QuestionRepository {
 
     private final Set<Question> questions = new HashSet<>();

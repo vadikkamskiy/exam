@@ -7,4 +7,6 @@ import java.util.Collection;
 public interface ExaminerService {
     Collection<Question> getQuestions(int amount);
     Collection<Question> getAllQuestions();
+    Collection<Question> getJavaQuestions();
+    Collection<Question> getMathQuestions();
 }

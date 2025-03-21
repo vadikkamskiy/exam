@@ -1,8 +1,9 @@
 package com.vadikkamskiy.exam.service.impl;
 
 import com.vadikkamskiy.exam.model.Question;
-import com.vadikkamskiy.exam.repository.QuestionRepository;
 import com.vadikkamskiy.exam.service.ExaminerService;
+import com.vadikkamskiy.exam.service.QuestionService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -10,31 +11,43 @@ import java.util.*;
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
 
-    private final QuestionRepository allQuestion;
+    private final JavaQuestionService javaQuestionService;
+    private final MathQuestionService mathQuestionService;
+    Random rand = new Random();
 
     public ExaminerServiceImpl(
-            QuestionRepository allQuestion) {
-        this.allQuestion = allQuestion;
+            JavaQuestionService javaQuestionService,
+            MathQuestionService mathQuestionService) {
+                this.javaQuestionService = javaQuestionService;
+                this.mathQuestionService = mathQuestionService;
     }
 
     @Override
     public Set<Question> getQuestions(int amount) {
-        Set<Question> result = new HashSet<>();
-        List<Question> allQuestions = new ArrayList<>(allQuestion.getAll());
-        System.out.println(allQuestion.getAll());
+        List<Question> allQuestions = new ArrayList<>();
+        allQuestions.addAll(mathQuestionService.getAllQuestions());
+        allQuestions.addAll(javaQuestionService.getAllQuestions());
         if (amount > allQuestions.size()) {
             throw new IllegalArgumentException("Requested more questions than available");
         }
 
-        while (result.size() < amount) {
-            Question question = allQuestion.getRand();
-            result.add(question);
-        }
+        Collections.shuffle(allQuestions);
 
-        return result;
+        return new HashSet<>(allQuestions.subList(0, amount));
     }
     @Override
     public Set<Question> getAllQuestions() {
-        return allQuestion.getAll();
+        Set<Question> result =new HashSet<>();
+        result.addAll(mathQuestionService.getAllQuestions());
+        result.addAll(javaQuestionService.getAllQuestions());
+        return result;
+    }
+    @Override
+    public Collection<Question> getJavaQuestions(){
+        return javaQuestionService.getAllQuestions();
+    }
+    @Override
+    public Collection<Question> getMathQuestions(){
+        return mathQuestionService.getAllQuestions();
     }
 }

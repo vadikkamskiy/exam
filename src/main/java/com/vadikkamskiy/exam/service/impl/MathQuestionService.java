@@ -16,11 +16,10 @@ import java.util.*;
 @Qualifier("mathQuestionService")
 public class MathQuestionService implements QuestionService {
 
-    private final Set<Question> mathQuestion = new HashSet<>();
-    private final Random random = new Random();
-    private final QuestionRepository repository;
-    public MathQuestionService(QuestionRepository questionRepository) {
-        this.repository = questionRepository;
+    private final QuestionRepository questionRepository;
+
+    public MathQuestionService(@Qualifier("mathQuestionRepository") QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
     }
     @PostConstruct
     public void init() {
@@ -33,35 +32,31 @@ public class MathQuestionService implements QuestionService {
     @Override
     public Question addQuestion(String question, String answer) {
         Question newQuestion = new Question(question, answer);
-        mathQuestion.add(newQuestion);
-        repository.add(newQuestion);
+        questionRepository.add(newQuestion);
         return newQuestion;
     }
 
     @Override
     public Question removeQuestion(String question, String answer) {
-        log.info("Removing question: {} with answer: {}", question, answer);
         Question q = new Question(question, answer);
-        if (!mathQuestion.remove(q)) {
-            log.warn("Question not found: {}", question);
-            throw new RuntimeException("Question not found");
-        }
-        mathQuestion.remove(q);
-        repository.remove(q);
-        return q;
+        return questionRepository.remove(q);
     }
 
     @Override
     public Set<Question> getAllQuestions() {
-        return mathQuestion;
+        return questionRepository.getAll();
     }
 
     @Override
     public Question getRandomQuestion() {
-        if (mathQuestion.isEmpty()) {
+        if (questionRepository.getAll().isEmpty()) {
+            log.warn("No questions available");
             throw new RuntimeException("No questions available");
         }
-        int index = random.nextInt(mathQuestion.size());
-        return mathQuestion.stream().toList().get(index);
+        Random random = new Random();
+        int index = random.nextInt(questionRepository.getAll().size());
+        Question result = new ArrayList<>(questionRepository.getAll()).get(index);
+        log.info("Returning random question: {}", result.getQuestion());
+        return result;
     }
 }
