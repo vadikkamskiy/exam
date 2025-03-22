@@ -9,4 +9,5 @@ public interface QuestionRepository {
     Question remove(Question question);
     Set<Question> getAll();
     Question getRand();
+    void addAll(Set<Question> questions);
 }

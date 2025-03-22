@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @Slf4j
 @RestController
@@ -23,4 +25,10 @@ public class ExamController {
     public Collection<Question> getQuestions(@PathVariable int amount) {
         return examinerService.getQuestions(amount);
     }
+
+    @GetMapping
+    public Collection<Question> getAllQuestions() {
+        return examinerService.getAllQuestions();
+    }
+    
 }
