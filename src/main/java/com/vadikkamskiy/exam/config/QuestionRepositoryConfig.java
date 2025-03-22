@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class QuestionRepositoryConfig {
 
-    @Bean(name = "javaQuestionRepository")
+    @Bean(name = "JavaQuestionRepository")
     public QuestionRepository javaQuestionRepository() {
         return new InMemoryQuestionRepository();
     }
 
-    @Bean(name = "mathQuestionRepository")
+    @Bean(name = "MathQuestionRepository")
     public QuestionRepository mathQuestionRepository() {
         return new InMemoryQuestionRepository();
     }

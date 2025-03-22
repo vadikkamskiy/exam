@@ -12,13 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 
 @Slf4j
-@Service("mathQuestionService")
-@Qualifier("mathQuestionService")
+@Service("MathQuestionService")
+@Qualifier("MathQuestionService")
 public class MathQuestionService implements QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public MathQuestionService(@Qualifier("mathQuestionRepository") QuestionRepository questionRepository) {
+    public MathQuestionService(@Qualifier("MathQuestionRepository") QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
     }
     @PostConstruct

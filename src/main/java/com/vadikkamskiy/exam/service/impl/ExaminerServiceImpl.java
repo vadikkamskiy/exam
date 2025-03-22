@@ -1,9 +1,13 @@
 package com.vadikkamskiy.exam.service.impl;
 
 import com.vadikkamskiy.exam.model.Question;
+import com.vadikkamskiy.exam.repository.QuestionRepository;
 import com.vadikkamskiy.exam.service.ExaminerService;
 import com.vadikkamskiy.exam.service.QuestionService;
 
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,27 +17,36 @@ public class ExaminerServiceImpl implements ExaminerService {
 
     private final JavaQuestionService javaQuestionService;
     private final MathQuestionService mathQuestionService;
-    Random rand = new Random();
+    private final QuestionRepository questionRepository;
+    private final Set<Question> allQuestions = new HashSet<>();
 
     public ExaminerServiceImpl(
-            JavaQuestionService javaQuestionService,
-            MathQuestionService mathQuestionService) {
+            @Qualifier("QuestionRepository")QuestionRepository questionRepository,
+            @Qualifier("JavaQuestionService")JavaQuestionService javaQuestionService,
+            @Qualifier("MathQuestionService")MathQuestionService mathQuestionService) {
                 this.javaQuestionService = javaQuestionService;
                 this.mathQuestionService = mathQuestionService;
+                this.questionRepository = questionRepository;
+
+    }
+
+    @PostConstruct
+    private void init() {
+        allQuestions.addAll(javaQuestionService.getAllQuestions());
+        allQuestions.addAll(mathQuestionService.getAllQuestions());
+        questionRepository.addAll(allQuestions);
     }
 
     @Override
     public Set<Question> getQuestions(int amount) {
-        List<Question> allQuestions = new ArrayList<>();
-        allQuestions.addAll(mathQuestionService.getAllQuestions());
-        allQuestions.addAll(javaQuestionService.getAllQuestions());
+        Set<Question> result = new HashSet<>();
         if (amount > allQuestions.size()) {
             throw new IllegalArgumentException("Requested more questions than available");
         }
-
-        Collections.shuffle(allQuestions);
-
-        return new HashSet<>(allQuestions.subList(0, amount));
+        while (result.size() < amount) {
+            result.add(questionRepository.getRand());
+        }
+        return result;
     }
     @Override
     public Set<Question> getAllQuestions() {

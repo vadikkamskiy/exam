@@ -9,8 +9,18 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 @Slf4j
+@Service("QuestionRepository")
+@Qualifier("QuestionRepository")
 public class InMemoryQuestionRepository implements QuestionRepository {
+
+    @Override
+    public void addAll(Set<Question> questionsToAdd) {
+        questions.addAll(questionsToAdd);
+    }
 
     private final Set<Question> questions = new HashSet<>();
     private final Random random = new Random();

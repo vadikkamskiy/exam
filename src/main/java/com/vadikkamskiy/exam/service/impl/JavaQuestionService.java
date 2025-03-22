@@ -13,12 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 import jakarta.annotation.PostConstruct;
 
 @Slf4j
-@Service("javaQuestionService")
+@Service("JavaQuestionService")
+@Qualifier("JavaQuestionService")
 public class JavaQuestionService implements QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public JavaQuestionService(@Qualifier("javaQuestionRepository") QuestionRepository questionRepository) {
+    public JavaQuestionService(@Qualifier("JavaQuestionRepository") QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
     }
 
