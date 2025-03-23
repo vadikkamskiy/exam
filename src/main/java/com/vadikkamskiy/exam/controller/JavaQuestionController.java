@@ -1,8 +1,6 @@
 package com.vadikkamskiy.exam.controller;
 
 import com.vadikkamskiy.exam.model.Question;
-import com.vadikkamskiy.exam.repository.QuestionRepository;
-import com.vadikkamskiy.exam.service.ExaminerService;
 import com.vadikkamskiy.exam.service.QuestionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;

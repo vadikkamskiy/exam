@@ -3,7 +3,6 @@ package com.vadikkamskiy.exam.service.impl;
 import com.vadikkamskiy.exam.model.Question;
 import com.vadikkamskiy.exam.repository.QuestionRepository;
 import com.vadikkamskiy.exam.service.ExaminerService;
-import com.vadikkamskiy.exam.service.QuestionService;
 
 import jakarta.annotation.PostConstruct;
 
