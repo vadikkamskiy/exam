@@ -4,24 +4,27 @@ import com.vadikkamskiy.exam.model.Question;
 import com.vadikkamskiy.exam.repository.QuestionRepository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 @Slf4j
-@Repository
+@Service("QuestionRepository")
+@Qualifier("QuestionRepository")
 public class InMemoryQuestionRepository implements QuestionRepository {
+
+    @Override
+    public void addAll(Set<Question> questionsToAdd) {
+        questions.addAll(questionsToAdd);
+    }
 
     private final Set<Question> questions = new HashSet<>();
     private final Random random = new Random();
 
-//        public InMemoryQuestionRepository(MathQuestionService math, JavaQuestionService java){
-//        questions.add((Question) math.getAllQuestions());
-//        questions.add((Question) java.getAllQuestions());
-//    }
     @Override
     public Question add(Question question) {
         questions.add(question);
@@ -33,6 +36,8 @@ public class InMemoryQuestionRepository implements QuestionRepository {
         if (!questions.remove(question)) {
             throw new RuntimeException("Question not found");
         }
+        questions.remove(question);
+        log.info("Removed question: {}", question.getQuestion());
         return question;
     }
 

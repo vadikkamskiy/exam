@@ -2,7 +2,6 @@ package com.vadikkamskiy.exam.controller;
 
 import com.vadikkamskiy.exam.model.Question;
 import com.vadikkamskiy.exam.service.QuestionService;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,7 @@ public class JavaQuestionController {
 
     private final QuestionService questionService;
 
-    public JavaQuestionController(@Qualifier("javaQuestionService")QuestionService questionService) {
+    public JavaQuestionController(@Qualifier("JavaQuestionService") QuestionService questionService) {
         this.questionService = questionService;
     }
 

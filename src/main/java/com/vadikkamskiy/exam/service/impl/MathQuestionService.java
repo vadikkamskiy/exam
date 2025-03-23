@@ -7,20 +7,19 @@ import com.vadikkamskiy.exam.service.QuestionService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
-@Service("mathQuestionService")
-@Qualifier("mathQuestionService")
+@Slf4j
+@Service("MathQuestionService")
+@Qualifier("MathQuestionService")
 public class MathQuestionService implements QuestionService {
 
-    private final Set<Question> mathQuestion = new HashSet<>();
-    private final Random random = new Random();
-    private final QuestionRepository repository;
-    public MathQuestionService(QuestionRepository questionRepository) {
-        this.repository = questionRepository;
+    private final QuestionRepository questionRepository;
+
+    public MathQuestionService(@Qualifier("MathQuestionRepository") QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
     }
     @PostConstruct
     public void init() {
@@ -33,28 +32,31 @@ public class MathQuestionService implements QuestionService {
     @Override
     public Question addQuestion(String question, String answer) {
         Question newQuestion = new Question(question, answer);
-        mathQuestion.add(newQuestion);
-        repository.add(newQuestion);
+        questionRepository.add(newQuestion);
         return newQuestion;
     }
 
     @Override
     public Question removeQuestion(String question, String answer) {
-        mathQuestion.remove(new Question(question,answer));
-        return new Question(question, answer);
+        Question q = new Question(question, answer);
+        return questionRepository.remove(q);
     }
 
     @Override
     public Set<Question> getAllQuestions() {
-        return mathQuestion;
+        return questionRepository.getAll();
     }
 
     @Override
     public Question getRandomQuestion() {
-        if (mathQuestion.isEmpty()) {
+        if (questionRepository.getAll().isEmpty()) {
+            log.warn("No questions available");
             throw new RuntimeException("No questions available");
         }
-        int index = random.nextInt(mathQuestion.size());
-        return mathQuestion.stream().toList().get(index);
+        Random random = new Random();
+        int index = random.nextInt(questionRepository.getAll().size());
+        Question result = new ArrayList<>(questionRepository.getAll()).get(index);
+        log.info("Returning random question: {}", result.getQuestion());
+        return result;
     }
 }
